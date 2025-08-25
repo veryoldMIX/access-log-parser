@@ -32,21 +32,28 @@ public class Main {
             int maxLength = 0;
             int minLength = Integer.MAX_VALUE;
             int lineCount = 0;
-            while (true) {
-                try {
-                    if ((line = reader.readLine()) == null) break;
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+            try {
+                while (true) {
+                    line = reader.readLine();
+                    if (line == null) break;
+
+                    lineCount++;
+                    int currentLength = line.length();
+
+                    if (currentLength > maxLength) {
+                        maxLength = currentLength;
+                    }
+
+                    if (currentLength < minLength && currentLength > 0) {
+                        minLength = currentLength;
+                    }
+
+                    if (currentLength > 1024) {
+                        throw new RuntimeException("Длина строки более 1024 символов");
+                    }
                 }
-                lineCount++;
-                int currentLength = line.length();
-                if (currentLength > maxLength) {
-                    maxLength = currentLength;
-                }
-                if (currentLength < minLength && currentLength > 0) {
-                    minLength = currentLength;
-                }
-                if (currentLength > 1024) throw new RuntimeException("Длина строки более 1024 символов");
+            } catch (IOException | RuntimeException ex) {
+                ex.printStackTrace();
             }
             System.out.println("Количество строк: " + lineCount);
             System.out.println("Максимальная длина строки: " + maxLength);
